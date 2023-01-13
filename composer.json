@@ -2,7 +2,7 @@
 	"name": "ismaelet/instagram-graph",
 	"autoload": {
 		"psr-4": {
-			"Tutsplus\\Library\\": "src"
+			"Ismaelet\\InstagramGraph\\": "src"
 		}
 	}
 }

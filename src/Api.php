@@ -9,6 +9,43 @@ class Api {
 
 	private const DEBUGGING = false;
 
+	private static $clientId = '586804842971911';
+	private static $clientSecret = '9cc4fc9f496973f65727df75f2523c19';
+
+	/*
+	* Redirect to the Instagram page to request the temporary code
+	*/
+	public static function requestToken() {
+		$redirectUri = $_SERVER['REQUEST_URI'];
+
+		header('Location: https://www.instagram.com/oauth/authorize/?client_id=' . self::$clientId . '&client_secret=' . self::$clientSecret . '&redirect_uri=' . $redirectUri . '&response_type=code&scope=user_profile');
+	}
+
+	/*
+	* Exchange the temporary code for a token
+	*/
+	public static function exchangeCode($temporaryCode) {
+		$endpoint = 'https://api.instagram.com/oauth/access_token';
+		$redirectUri = $_SERVER['REQUEST_URI'];
+
+		$queryFields = [
+			'client_id' => self::$clientId,
+			'client_secret' => self::$clientSecret,
+			'code' => $temporaryCode,
+			'grant_type' => 'authorization_code',
+			'redirect_uri' => $redirectUri,
+		];
+
+		$response = new HttpResponse('GET', $endpoint, $queryFields);
+		$response = $response->json();
+
+		if (self::DEBUGGING) debug($response);
+
+		if (isset($response['access_token'])) return $response['access_token'];
+		else if (isset($response['error_type'])) self::requestToken();
+		else print_r($response);
+	}
+
 	public static function refreshToken($oldToken) {
 		$endpoint = 'https://graph.instagram.com/refresh_access_token';
 		$queryFields = [

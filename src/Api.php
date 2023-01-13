@@ -1,6 +1,6 @@
 <?php
 
-namespace Vendor\Meta\InstagramGraph;
+namespace Ismaelet\InstagramGraph;
 
 use \DB;
 use \HttpResponse;

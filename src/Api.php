@@ -13,10 +13,17 @@ class Api {
 	private static $clientSecret = '9cc4fc9f496973f65727df75f2523c19';
 
 	/*
+	* Set the redirect URI
+	*/
+	private static function calcRedirectUri() {
+		return "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+	}
+
+	/*
 	* Redirect to the Instagram page to request the temporary code
 	*/
 	public static function requestToken() {
-		$redirectUri = $_SERVER['REQUEST_URI'];
+		$redirectUri = self::calcRedirectUri();
 
 		header('Location: https://www.instagram.com/oauth/authorize/?client_id=' . self::$clientId . '&client_secret=' . self::$clientSecret . '&redirect_uri=' . $redirectUri . '&response_type=code&scope=user_profile');
 	}
@@ -26,7 +33,7 @@ class Api {
 	*/
 	public static function exchangeCode($temporaryCode) {
 		$endpoint = 'https://api.instagram.com/oauth/access_token';
-		$redirectUri = $_SERVER['REQUEST_URI'];
+		$redirectUri = self::calcRedirectUri();
 
 		$queryFields = [
 			'client_id' => self::$clientId,
@@ -36,7 +43,7 @@ class Api {
 			'redirect_uri' => $redirectUri,
 		];
 
-		$response = new HttpResponse('GET', $endpoint, $queryFields);
+		$response = new HttpResponse('POST', $endpoint, $queryFields);
 		$response = $response->json();
 
 		if (self::DEBUGGING) debug($response);

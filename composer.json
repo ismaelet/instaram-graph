@@ -2,7 +2,7 @@
 	"name": "ismaelet/instagram-graph",
 	"autoload": {
 		"psr-4": {
-			"Ismaelet\\InstagramGraph\\": "src"
+			"Ismaelet\\Instagram\\Graph\\": "src"
 		}
 	}
 }

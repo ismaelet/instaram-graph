@@ -1,6 +1,6 @@
 <?php
 
-namespace Ismaelet\InstagramGraph;
+namespace Ismaelet\Instagram\Graph;
 
 use \DB;
 use \HttpResponse;
